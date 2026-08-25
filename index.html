@@ -40,6 +40,24 @@
         #botonSalir { background-color: #424242; color: white; }
         #inputDestino { display: none; width: 100%; padding: 12px; margin: 10px 0; font-size: 17px; border: 2px solid #1976d2; border-radius: 8px; }
         #btnBuscarDestino { display: none; width: 100%; padding: 12px; margin: 8px 0; font-size: 17px; border: none; border-radius: 8px; background: #1976d2; color: white; cursor: pointer; font-weight: bold; }
+        .panel-datos { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); align-items: center; justify-content: center; padding: 16px; z-index: 200; }
+        .panel-datos.visible { display: flex; }
+        .panel-datos-contenido { width: 100%; max-width: 420px; max-height: 90vh; overflow-y: auto; background: #fff; border-radius: 14px; padding: 18px; box-shadow: 0 5px 18px rgba(0,0,0,0.35); }
+        .panel-datos-cabecera { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 12px; }
+        .panel-datos-cabecera h3 { font-size: 20px; }
+        #cerrarDatos { border: none; border-radius: 8px; background: #757575; color: white; padding: 9px 12px; font-size: 16px; cursor: pointer; }
+        .form-datos { display: grid; gap: 8px; margin-bottom: 15px; }
+        .form-datos input { width: 100%; padding: 11px; font-size: 16px; border: 2px solid #bdbdbd; border-radius: 8px; }
+        #guardarDato { width: 100%; padding: 11px; font-size: 17px; font-weight: bold; border: none; border-radius: 8px; background: #1976d2; color: white; cursor: pointer; }
+        #listaDatos { display: grid; gap: 8px; }
+        .dato-vacio { padding: 12px; color: #555; background: #f5f5f5; border-radius: 8px; text-align: center; }
+        .dato-item { padding: 11px; border: 1px solid #ddd; border-radius: 8px; background: #fafafa; }
+        .dato-item strong { display: block; font-size: 17px; color: #222; }
+        .dato-item small { display: block; margin-top: 4px; color: #555; overflow-wrap: anywhere; }
+        .dato-acciones { display: flex; gap: 8px; margin-top: 9px; }
+        .dato-acciones button { flex: 1; padding: 8px; border: none; border-radius: 7px; font-size: 15px; cursor: pointer; }
+        .btn-principal-dato { background: #e3f2fd; color: #0d47a1; }
+        .btn-eliminar-dato { background: #ffebee; color: #b71c1c; }
     </style>
 </head>
 <body>
@@ -50,7 +68,7 @@
                 <span class="texto">EMERGENCIA</span>
                 <div class="progreso-sos"></div>
             </button>
-            <div class="nombre-app">&#129513; RUTA SEGURA</div>
+            <div class="nombre-app">&#129517; RUTA SEGURA</div>
             <button id="botonAjustes" class="boton-cuadrado">
                 <span class="icono">&#9881;</span>
                 <span class="texto">AJUSTES</span>
@@ -72,36 +90,50 @@
                 <span>Hablar</span>
             </button>
             <button id="btnRutaRapida" class="boton-accion-cuadrado">
-                <span class="icono">&#129513;</span>
+                <span class="icono">&#129517;</span>
                 <span>Ir a...</span>
             </button>
         </div>
         <div id="espacioConsejos">
-            &#128161; Consejo: Mantené presionado el botón &#128681; por 2 segundos en caso de emergencia.
+            &#128161; Consejo: Manten&#233; presionado el bot&#243;n &#128681; por 2 segundos en caso de emergencia.
         </div>
         <footer>Sugerencias a: iaparamayoresapp@gmail.com</footer>
     </div>
     <div id="panelAjustes">
         <h3>&#128203; Mis Datos y Ayuda</h3>
-        <input type="text" id="inputDestino" placeholder="Escribí tu destino (ej: Plaza San Martín)">
+        <input type="text" id="inputDestino" placeholder="EscribÃ­ tu destino (ej: Plaza San MartÃ­n)">
         <button id="btnBuscarDestino">&#128269; Buscar ruta</button>
-        <button id="btnRuta">&#129513; ¿CÓMO LLEGO A...?</button>
+        <button id="btnRuta">&#129517; Â¿CÃ“MO LLEGO A...?</button>
         <button id="btnLinterna" style="background:#fff9c4; color:#f57f17;">&#128294; Linterna</button>
         <button id="btnLugares">&#128204; Mis Lugares guardados</button>
         <button id="btnContactos">&#128101; Contactos de confianza</button>
         <hr style="margin:15px 0; border: 1px solid #eee;">
         <p style="font-size:16px; color:#d32f2f; font-weight:bold; margin-bottom:10px;">&#128680; Ayuda Inmediata:</p>
         <button id="btnSalud" style="background:#e8f5e9; color:#2e7d32;">&#127973; Buscar Centro de Salud / Farmacia</button>
-        <button id="btnPolicia" style="background:#ffebee; color:#c62828;">&#128110; Llamar a Policía / Emergencias</button>
+        <button id="btnPolicia" style="background:#ffebee; color:#c62828;">&#128110; Llamar a PolicÃ­a / Emergencias</button>
         <button id="btnHospital" style="background:#fff3e0; color:#e65100;">&#128657; Buscar Hospital con Guardia</button>
         <hr style="margin:15px 0; border: 1px solid #eee;">
-        <p style="font-size:16px; color:#1976d2; font-weight:bold; margin-bottom:10px;">&#128205; Destinos útiles:</p>
+        <p style="font-size:16px; color:#1976d2; font-weight:bold; margin-bottom:10px;">&#128205; Destinos Ãºtiles:</p>
         <button id="btnBanco" style="background:#e3f2fd; color:#0d47a1;">&#127974; Buscar Banco / Cajero</button>
         <button id="btnSuper" style="background:#f3e5f5; color:#4a148c;">&#128722; Buscar Supermercado</button>
         <button id="btnPlaza" style="background:#e8f5e9; color:#2e7d32;">&#127795; Buscar Plaza / Iglesia</button>
         <hr style="margin:15px 0; border: 1px solid #eee;">
         <button id="botonSalir" style="background:#424242; color:white;">&#128682; SALIR DE LA APP</button>
         <button id="cerrarAjustes" style="background:#d32f2f; color:white;">&#10060; Cerrar</button>
+    </div>
+    <div id="panelDatos" class="panel-datos" aria-hidden="true">
+        <div class="panel-datos-contenido" role="dialog" aria-modal="true" aria-labelledby="tituloDatos">
+            <div class="panel-datos-cabecera">
+                <h3 id="tituloDatos">Mis datos</h3>
+                <button id="cerrarDatos" type="button" aria-label="Cerrar ventana">Cerrar</button>
+            </div>
+            <div class="form-datos">
+                <input type="text" id="inputDatoNombre" placeholder="Nombre" autocomplete="name">
+                <input type="text" id="inputDatoValor" placeholder="DirecciÃ³n o telÃ©fono" autocomplete="off">
+                <button id="guardarDato" type="button">Guardar</button>
+            </div>
+            <div id="listaDatos"></div>
+        </div>
     </div>
     <script>
         const botonSOS = document.getElementById('botonSOS');
@@ -128,10 +160,148 @@
         const espacioConsejos = document.getElementById('espacioConsejos');
         const inputDestino = document.getElementById('inputDestino');
         const btnBuscarDestino = document.getElementById('btnBuscarDestino');
+        const panelDatos = document.getElementById('panelDatos');
+        const tituloDatos = document.getElementById('tituloDatos');
+        const cerrarDatos = document.getElementById('cerrarDatos');
+        const inputDatoNombre = document.getElementById('inputDatoNombre');
+        const inputDatoValor = document.getElementById('inputDatoValor');
+        const guardarDato = document.getElementById('guardarDato');
+        const listaDatos = document.getElementById('listaDatos');
         let miUbicacion = null, reconocimiento = null;
         let temporizadorSOS = null, sosActivo = false;
         let mapaLeaflet = null, marcadorUsuario = null;
         let linternaActiva = false, linternaStream = null;
+        const CLAVE_LUGARES = 'rutaSegura_lugares_v1';
+        const CLAVE_CONTACTOS = 'rutaSegura_contactos_v1';
+        let tipoDatoActual = 'lugares';
+
+        function claveDatosActual() {
+            return tipoDatoActual === 'lugares' ? CLAVE_LUGARES : CLAVE_CONTACTOS;
+        }
+
+        function leerDatos(clave) {
+            try {
+                const datos = JSON.parse(localStorage.getItem(clave) || '[]');
+                return Array.isArray(datos) ? datos : [];
+            } catch (error) {
+                return [];
+            }
+        }
+
+        function guardarDatos(clave, datos) {
+            try {
+                localStorage.setItem(clave, JSON.stringify(datos));
+                return true;
+            } catch (error) {
+                alert('No se pudieron guardar los datos en este dispositivo.');
+                return false;
+            }
+        }
+
+        function escaparHtml(valor) {
+            return String(valor).replace(/[&<>"']/g, caracter => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            }[caracter]));
+        }
+
+        function abrirPanelDatos(tipo) {
+            tipoDatoActual = tipo;
+            const esLugar = tipo === 'lugares';
+            tituloDatos.textContent = esLugar ? 'Mis Lugares guardados' : 'Contactos de confianza';
+            inputDatoNombre.placeholder = esLugar ? 'Nombre del lugar' : 'Nombre del contacto';
+            inputDatoValor.placeholder = esLugar ? 'DirecciÃ³n o referencia' : 'TelÃ©fono (ej.: 911)';
+            inputDatoValor.type = esLugar ? 'text' : 'tel';
+            inputDatoValor.inputMode = esLugar ? 'text' : 'tel';
+            guardarDato.textContent = esLugar ? 'Guardar lugar' : 'Guardar contacto';
+            panelDatos.classList.add('visible');
+            panelDatos.setAttribute('aria-hidden', 'false');
+            renderizarDatos();
+            setTimeout(() => inputDatoNombre.focus(), 0);
+        }
+
+        function cerrarPanelDatos() {
+            panelDatos.classList.remove('visible');
+            panelDatos.setAttribute('aria-hidden', 'true');
+            inputDatoNombre.value = '';
+            inputDatoValor.value = '';
+        }
+
+        function renderizarDatos() {
+            const datos = leerDatos(claveDatosActual());
+            const esLugar = tipoDatoActual === 'lugares';
+            if (!datos.length) {
+                listaDatos.innerHTML = esLugar
+                    ? '<div class="dato-vacio">TodavÃ­a no guardaste ningÃºn lugar.</div>'
+                    : '<div class="dato-vacio">TodavÃ­a no guardaste ningÃºn contacto.</div>';
+                return;
+            }
+            listaDatos.innerHTML = datos.map((dato, indice) => `
+                <div class="dato-item">
+                    <strong>${escaparHtml(dato.nombre)}</strong>
+                    <small>${escaparHtml(dato.valor)}</small>
+                    <div class="dato-acciones">
+                        <button type="button" class="btn-principal-dato" data-accion="usar" data-indice="${indice}">${esLugar ? 'Abrir ruta' : 'Llamar'}</button>
+                        <button type="button" class="btn-eliminar-dato" data-accion="eliminar" data-indice="${indice}">Eliminar</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function guardarDatoActual() {
+            const nombre = inputDatoNombre.value.trim();
+            const valor = inputDatoValor.value.trim();
+            if (!nombre || !valor) {
+                alert(tipoDatoActual === 'lugares' ? 'CompletÃ¡ el nombre y la direcciÃ³n.' : 'CompletÃ¡ el nombre y el telÃ©fono.');
+                return;
+            }
+            const datos = leerDatos(claveDatosActual());
+            datos.push({ nombre, valor });
+            if (guardarDatos(claveDatosActual(), datos)) {
+                inputDatoNombre.value = '';
+                inputDatoValor.value = '';
+                renderizarDatos();
+                cajaMensaje.textContent = tipoDatoActual === 'lugares' ? 'Lugar guardado.' : 'Contacto guardado.';
+                inputDatoNombre.focus();
+            }
+        }
+
+        function usarDato(indice) {
+            const datos = leerDatos(claveDatosActual());
+            const dato = datos[indice];
+            if (!dato) return;
+            if (tipoDatoActual === 'lugares') {
+                window.open('https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(dato.valor) + '&travelmode=walking', '_blank');
+                cajaMensaje.textContent = 'Abriendo ruta a ' + dato.nombre + '...';
+            } else {
+                const telefono = dato.valor.replace(/[^\d+]/g, '');
+                if (!telefono) {
+                    alert('El telÃ©fono guardado no es vÃ¡lido.');
+                    return;
+                }
+                window.location.href = 'tel:' + telefono;
+            }
+        }
+
+        listaDatos.addEventListener('click', evento => {
+            const boton = evento.target.closest('button[data-accion]');
+            if (!boton) return;
+            const indice = Number(boton.dataset.indice);
+            if (boton.dataset.accion === 'usar') {
+                usarDato(indice);
+                return;
+            }
+            const datos = leerDatos(claveDatosActual());
+            const dato = datos[indice];
+            if (dato && confirm('Â¿Eliminar "' + dato.nombre + '"?')) {
+                datos.splice(indice, 1);
+                guardarDatos(claveDatosActual(), datos);
+                renderizarDatos();
+            }
+        });
 
         function inicializarMapa() {
             mapaLeaflet = L.map('mapa').setView([-37.3429, -57.0342], 15);
@@ -147,14 +317,14 @@
 
         function iniciarUbicacion() {
             if (!navigator.geolocation) { cajaMensaje.textContent = "Navegador no compatible"; return; }
-            cajaMensaje.textContent = "Buscando tu ubicación...";
+            cajaMensaje.textContent = "Buscando tu ubicaciÃ³n...";
             navigator.geolocation.getCurrentPosition(pos => {
                 miUbicacion = pos.coords;
                 mapaLeaflet.setView([pos.coords.latitude, pos.coords.longitude], 16);
                 if (marcadorUsuario) mapaLeaflet.removeLayer(marcadorUsuario);
-                marcadorUsuario = L.marker([pos.coords.latitude, pos.coords.longitude]).addTo(mapaLeaflet).bindPopup("&#128205; Estás aquí").openPopup();
+                marcadorUsuario = L.marker([pos.coords.latitude, pos.coords.longitude]).addTo(mapaLeaflet).bindPopup("&#128205; EstÃ¡s aquÃ­").openPopup();
                 cajaMensaje.textContent = "\u2705 Todo listo";
-            }, () => cajaMensaje.textContent = "Activa ubicación en tu teléfono", {enableHighAccuracy: true, timeout:10000});
+            }, () => cajaMensaje.textContent = "Activa ubicaciÃ³n en tu telÃ©fono", {enableHighAccuracy: true, timeout:10000});
         }
 
         function iniciarVoz() {
@@ -163,16 +333,16 @@
             if (reconocimiento) { reconocimiento.stop(); botonVoz.classList.remove('escuchando'); return; }
             reconocimiento = new window.SpeechRecognition();
             reconocimiento.lang = 'es-ES'; reconocimiento.continuous = false; reconocimiento.interimResults = false;
-            reconocimiento.onstart = () => { botonVoz.classList.add('escuchando'); cajaMensaje.textContent = "Te escucho... decí tu comando"; };
+            reconocimiento.onstart = () => { botonVoz.classList.add('escuchando'); cajaMensaje.textContent = "Te escucho... decÃ­ tu comando"; };
             reconocimiento.onresult = e => {
                 cajaMensaje.innerHTML = '&#9989; Dijiste: <strong>"' + e.results[0][0].transcript.toLowerCase() + '"</strong>';
                 procesarComando(e.results[0][0].transcript.toLowerCase());
                 botonVoz.classList.remove('escuchando'); reconocimiento = null;
             };
-            reconocimiento.onerror = () => { botonVoz.classList.remove('escuchando'); cajaMensaje.textContent = "No te escuché bien. Intentá de nuevo."; reconocimiento = null; };
+            reconocimiento.onerror = () => { botonVoz.classList.remove('escuchando'); cajaMensaje.textContent = "No te escuchÃ© bien. IntentÃ¡ de nuevo."; reconocimiento = null; };
             reconocimiento.onend = () => { botonVoz.classList.remove('escuchando'); reconocimiento = null; };
             reconocimiento.start();
-            setTimeout(() => { if (reconocimiento) { reconocimiento.stop(); botonVoz.classList.remove('escuchando'); cajaMensaje.textContent = "Se acabó el tiempo. Tocá el micrófono de nuevo."; reconocimiento = null; } }, 8000);
+            setTimeout(() => { if (reconocimiento) { reconocimiento.stop(); botonVoz.classList.remove('escuchando'); cajaMensaje.textContent = "Se acabÃ³ el tiempo. TocÃ¡ el micrÃ³fono de nuevo."; reconocimiento = null; } }, 8000);
         }
 
         function procesarComando(texto) {
@@ -187,29 +357,29 @@
             if (!encontroLugar) {
                 if (texto.includes("camino") || texto.includes("llegar") || texto.includes("ruta") || texto.includes("ir a")) {
                     panelAjustes.style.display = 'block'; inputDestino.style.display = 'block'; btnBuscarDestino.style.display = 'block'; inputDestino.focus();
-                    cajaMensaje.innerHTML += '<br>Escribí o decí tu destino específico';
+                    cajaMensaje.innerHTML += '<br>EscribÃ­ o decÃ­ tu destino especÃ­fico';
                 } else if (texto.includes("compartir")) { compartirUbicacion(); }
                 else if (texto.includes("emergencia") || texto.includes("ayuda") || texto.includes("sos")) { activarSOS(); }
                 else if (texto.includes("llegue") || texto.includes("casa")) { llegueBien(); }
-                else if (texto.includes("llamar")) { if(confirm("Querés hacer una llamada?")) window.location.href = "tel:"; }
+                else if (texto.includes("llamar")) { if(confirm("QuerÃ©s hacer una llamada?")) window.location.href = "tel:"; }
                 else { window.open('https://www.google.com/maps/search/' + encodeURIComponent(texto), '_blank'); cajaMensaje.innerHTML = '&#128269; Buscando "<strong>' + texto + '</strong>" en el mapa...'; }
             }
         }
 
         function compartirUbicacion() {
-            if (!miUbicacion) { cajaMensaje.textContent = "No tengo ubicación aún"; return; }
-            window.open('https://wa.me/?text=' + encodeURIComponent('Mi ubicación: https://maps.google.com/?q=' + miUbicacion.latitude + ',' + miUbicacion.longitude), '_blank');
+            if (!miUbicacion) { cajaMensaje.textContent = "No tengo ubicaciÃ³n aÃºn"; return; }
+            window.open('https://wa.me/?text=' + encodeURIComponent('Mi ubicaciÃ³n: https://maps.google.com/?q=' + miUbicacion.latitude + ',' + miUbicacion.longitude), '_blank');
             cajaMensaje.textContent = "Abriendo WhatsApp...";
         }
 
         function llegueBien() {
-            if (!miUbicacion) { cajaMensaje.textContent = "No tengo ubicación aún"; return; }
-            window.open('https://wa.me/?text=' + encodeURIComponent('Hola! Llegué bien a casa. Mi ubicación: https://maps.google.com/?q=' + miUbicacion.latitude + ',' + miUbicacion.longitude), '_blank');
+            if (!miUbicacion) { cajaMensaje.textContent = "No tengo ubicaciÃ³n aÃºn"; return; }
+            window.open('https://wa.me/?text=' + encodeURIComponent('Hola! LleguÃ© bien a casa. Mi ubicaciÃ³n: https://maps.google.com/?q=' + miUbicacion.latitude + ',' + miUbicacion.longitude), '_blank');
             cajaMensaje.textContent = "Abriendo WhatsApp...";
         }
 
         function activarSOS() {
-            if (confirm("¡ATENCIÓN! ¿Activar emergencia? Se avisará a tus contactos de confianza con tu ubicación.")) {
+            if (confirm("Â¡ATENCIÃ“N! Â¿Activar emergencia? Se avisarÃ¡ a tus contactos de confianza con tu ubicaciÃ³n.")) {
                 cajaMensaje.textContent = "SOS ACTIVADO - Avisando a contactos";
             }
         }
@@ -227,37 +397,41 @@
                     linternaStream.getTracks().forEach(t => t.stop()); linternaStream = null; linternaActiva = false;
                     cajaMensaje.textContent = "Linterna apagada"; btnLinterna.textContent = "Linterna";
                 }
-            } catch (e) { alert("No se pudo activar la linterna. Verificá los permisos de cámara."); }
+            } catch (e) { alert("No se pudo activar la linterna. VerificÃ¡ los permisos de cÃ¡mara."); }
         }
 
         btnSalud.addEventListener('click', () => window.open('https://www.google.com/maps/search/farmacia+o+centro+de+salud+cerca+de+mi', '_blank'));
-        btnPolicia.addEventListener('click', () => { if(confirm("Querés llamar ahora al número de emergencias?")) window.location.href = "tel:911"; });
+        btnPolicia.addEventListener('click', () => { if(confirm("QuerÃ©s llamar ahora al nÃºmero de emergencias?")) window.location.href = "tel:911"; });
         btnHospital.addEventListener('click', () => window.open('https://www.google.com/maps/search/hospital+con+guardia+cerca+de+mi', '_blank'));
         btnBanco.addEventListener('click', () => window.open('https://www.google.com/maps/search/banco+o+cajero+automatico+cerca+de+mi', '_blank'));
         btnSuper.addEventListener('click', () => window.open('https://www.google.com/maps/search/supermercado+cerca+de+mi', '_blank'));
         btnPlaza.addEventListener('click', () => window.open('https://www.google.com/maps/search/plaza+o+iglesia+cerca+de+mi', '_blank'));
         btnLinterna.addEventListener('click', toggleLinterna);
-        btnLugares.addEventListener('click', () => alert("Próximamente: Acá vas a poder guardar tus lugares favoritos."));
-        btnContactos.addEventListener('click', () => alert("Próximamente: Acá vas a poder agregar contactos de emergencia."));
+        btnLugares.addEventListener('click', () => abrirPanelDatos('lugares'));
+        btnContactos.addEventListener('click', () => abrirPanelDatos('contactos'));
+        cerrarDatos.addEventListener('click', cerrarPanelDatos);
+        guardarDato.addEventListener('click', guardarDatoActual);
+        inputDatoValor.addEventListener('keydown', evento => { if (evento.key === 'Enter') guardarDatoActual(); });
+        panelDatos.addEventListener('click', evento => { if (evento.target === panelDatos) cerrarPanelDatos(); });
         
         botonSalir.addEventListener('click', () => {
-            if(confirm("Seguro que querés salir de Ruta Segura?")) {
-                cajaMensaje.textContent = "Gracias por usar Ruta Segura. ¡Cuidate!";
+            if(confirm("Seguro que querÃ©s salir de Ruta Segura?")) {
+                cajaMensaje.textContent = "Gracias por usar Ruta Segura. Â¡Cuidate!";
                 setTimeout(() => { window.location.replace("https://www.google.com"); }, 1000);
             }
         });
 
         botonAjustes.addEventListener('click', () => { panelAjustes.style.display = 'block'; inputDestino.style.display = 'none'; btnBuscarDestino.style.display = 'none'; });
         cerrarAjustes.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); panelAjustes.style.display = 'none'; inputDestino.style.display = 'none'; btnBuscarDestino.style.display = 'none'; inputDestino.value = ''; });
-        btnRuta.addEventListener('click', () => { inputDestino.style.display = 'none'; btnBuscarDestino.style.display = 'none'; cajaMensaje.textContent = "Elegí una opción del menú"; });
+        btnRuta.addEventListener('click', () => { inputDestino.style.display = 'none'; btnBuscarDestino.style.display = 'none'; cajaMensaje.textContent = "ElegÃ­ una opciÃ³n del menÃº"; });
         btnBuscarDestino.addEventListener('click', () => {
             const destino = inputDestino.value.trim();
             if (destino) {
                 window.open('https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(destino) + '&travelmode=walking', '_blank');
                 panelAjustes.style.display = 'none'; inputDestino.style.display = 'none'; btnBuscarDestino.style.display = 'none'; inputDestino.value = '';
-            } else { alert("Escribí un destino primero"); }
+            } else { alert("EscribÃ­ un destino primero"); }
         });
-        btnRutaRapida.addEventListener('click', () => { panelAjustes.style.display = 'block'; inputDestino.style.display = 'block'; btnBuscarDestino.style.display = 'block'; inputDestino.focus(); cajaMensaje.textContent = "Escribí tu destino o tocá el micrófono"; });
+        btnRutaRapida.addEventListener('click', () => { panelAjustes.style.display = 'block'; inputDestino.style.display = 'block'; btnBuscarDestino.style.display = 'block'; inputDestino.focus(); cajaMensaje.textContent = "EscribÃ­ tu destino o tocÃ¡ el micrÃ³fono"; });
 
         window.addEventListener('load', () => { inicializarMapa(); iniciarUbicacion(); });
         botonVoz.addEventListener('click', iniciarVoz);
@@ -265,13 +439,13 @@
         btnLlegueBien.addEventListener('click', llegueBien);
 
         const mensajes = [
-            "Consejo: Mantené presionado el botón de emergencia por 2 segundos.",
-            "Tocá el micrófono y decí 'Compartir' para enviar tu ubicación.",
-            "Recordá cargar la batería de tu celular antes de salir a caminar.",
-            "Conocé nuestras otras apps educativas en: Cursos IA para Mayores.",
-            "Caminar 20 minutos al día mejora tu salud y tu ánimo. ¡Vos podés!",
-            "En el menú Ajustes tenés acceso directo a hospitales y farmacias.",
-            "El modo avión gasta menos batería. Usalo si necesitás ahorrar."
+            "Consejo: Manten\u00e9 presionado el bot\u00f3n de emergencia por 2 segundos.",
+            "Toc\u00e1 el micr\u00f3fono y dec\u00ed 'Compartir' para enviar tu ubicaci\u00f3n.",
+            "Record\u00e1 cargar la bater\u00eda de tu celular antes de salir a caminar.",
+            "Conoc\u00e9 nuestras otras apps educativas en: Cursos IA para Mayores.",
+            "Caminar 20 minutos al d\u00eda mejora tu salud y tu \u00e1nimo. \u00a1Vos pod\u00e9s!",
+            "En el men\u00fa Ajustes ten\u00e9s acceso directo a hospitales y farmacias.",
+            "El modo avi\u00f3n gasta menos bater\u00eda. Usalo si necesit\u00e1s ahorrar."
         ];
         let indiceMensaje = 0;
         setInterval(() => {
