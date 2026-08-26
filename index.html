@@ -423,7 +423,20 @@
 
         botonAjustes.addEventListener('click', () => { panelAjustes.style.display = 'block'; inputDestino.style.display = 'none'; btnBuscarDestino.style.display = 'none'; });
         cerrarAjustes.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); panelAjustes.style.display = 'none'; inputDestino.style.display = 'none'; btnBuscarDestino.style.display = 'none'; inputDestino.value = ''; });
-        btnRuta.addEventListener('click', () => { inputDestino.style.display = 'none'; btnBuscarDestino.style.display = 'none'; cajaMensaje.textContent = "Elegí una opción del menú"; });
+        btnRuta.addEventListener('click', () => {
+    inputDestino.style.display = 'block';
+    btnBuscarDestino.style.display = 'block';
+    inputDestino.focus();
+    inputDestino.placeholder = "Ej: Calle 36 y Avenida 7, Hospital, etc.";
+    cajaMensaje.textContent = "🧭 Escribí tu destino y tocá 'Buscar ruta'";
+    
+    // Permitir buscar presionando Enter
+    inputDestino.onkeypress = function(e) {
+        if(e.key === 'Enter') {
+            btnBuscarDestino.click();
+        }
+    };
+});
         btnBuscarDestino.addEventListener('click', () => {
             const destino = inputDestino.value.trim();
             if (destino) {
@@ -431,7 +444,21 @@
                 panelAjustes.style.display = 'none'; inputDestino.style.display = 'none'; btnBuscarDestino.style.display = 'none'; inputDestino.value = '';
             } else { alert("Escribí un destino primero"); }
         });
-        btnRutaRapida.addEventListener('click', () => { panelAjustes.style.display = 'block'; inputDestino.style.display = 'block'; btnBuscarDestino.style.display = 'block'; inputDestino.focus(); cajaMensaje.textContent = "Escribí tu destino o tocá el micrófono"; });
+        btnRutaRapida.addEventListener('click', () => {
+    panelAjustes.style.display = 'block';
+    inputDestino.style.display = 'block';
+    btnBuscarDestino.style.display = 'block';
+    inputDestino.focus();
+    inputDestino.placeholder = "Ej: Hospital Municipal, Plaza San Martín...";
+    cajaMensaje.textContent = "✏️ Escribí el destino y tocá 'Buscar ruta' o presioná Enter";
+    
+    // Permitir buscar presionando Enter
+    inputDestino.onkeypress = function(e) {
+        if(e.key === 'Enter') {
+            btnBuscarDestino.click();
+        }
+    };
+});
 
         window.addEventListener('load', () => { inicializarMapa(); iniciarUbicacion(); });
         botonVoz.addEventListener('click', iniciarVoz);
