@@ -120,6 +120,7 @@
         <hr style="margin:15px 0; border: 1px solid #eee;">
         <button id="botonSalir" style="background:#424242; color:white;">&#128682; SALIR DE LA APP</button>
         <button id="cerrarAjustes" style="background:#d32f2f; color:white;">&#10060; Cerrar</button>
+        <button id="btnInstalarManual" style="background:#1976d2; color:white; margin-top:10px; display:none;">📲 Instalar aplicación en el celular</button>
     </div>
     <div id="panelDatos" class="panel-datos" aria-hidden="true">
         <div class="panel-datos-contenido" role="dialog" aria-modal="true" aria-labelledby="tituloDatos">
@@ -480,6 +481,29 @@
             espacioConsejos.style.opacity = 0;
             setTimeout(() => { espacioConsejos.textContent = mensajes[indiceMensaje]; espacioConsejos.style.opacity = 1; }, 300);
         }, 17000);
+        // Lógica para el botón de instalación manual
+let deferredPrompt;
+const btnInstalarManual = document.getElementById('btnInstalarManual');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault(); // Evita que Chrome muestre su aviso automático
+    deferredPrompt = e;
+    // Mostramos nuestro botón personalizado
+    if(btnInstalarManual) btnInstalarManual.style.display = 'block';
+});
+
+if(btnInstalarManual) {
+    btnInstalarManual.addEventListener('click', async () => {
+        if (deferredPrompt) {
+            deferredPrompt.prompt(); // Muestra el aviso nativo de instalación
+            await deferredPrompt.userChoice; // Espera a que el usuario elija
+            deferredPrompt = null; // Limpiamos la variable
+            btnInstalarManual.style.display = 'none'; // Ocultamos el botón
+        } else {
+            alert("La app ya está instalada o tu navegador no permite instalarla desde aquí.");
+        }
+    });
+}
 
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
